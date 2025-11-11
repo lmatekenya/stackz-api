@@ -43,11 +43,11 @@ class QuizPack
     #[Groups(['quiz_pack:read'])]
     private bool $isPublic = true;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['quiz_pack:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups(['quiz_pack:read'])]
     private ?\DateTimeInterface $updatedAt = null;
 

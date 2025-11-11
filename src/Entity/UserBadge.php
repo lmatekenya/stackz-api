@@ -15,7 +15,7 @@ class UserBadge
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userBadges')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -32,7 +32,7 @@ class UserBadge
     #[Groups(['user:read'])]
     private bool $isActive = true;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $unlockedAt = null;
 

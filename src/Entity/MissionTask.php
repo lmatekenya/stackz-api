@@ -46,7 +46,7 @@ class MissionTask
 
     #[ORM\Column]
     #[Groups(['task:read'])]
-    private int $reward = 0;
+    private array $reward = [];
 
     #[ORM\Column]
     #[Groups(['task:read'])]
@@ -109,12 +109,12 @@ class MissionTask
         return $this;
     }
 
-    public function getReward(): int
+    public function getReward(): array
     {
         return $this->reward;
     }
 
-    public function setReward(int $reward): static
+    public function setReward(array $reward): static
     {
         $this->reward = $reward;
         return $this;

@@ -25,7 +25,7 @@ class LeaderboardEntry
     #[Groups(['leaderboard:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'leaderboardEntries')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['leaderboard:read'])]
     private ?User $user = null;
@@ -46,7 +46,7 @@ class LeaderboardEntry
     #[Groups(['leaderboard:read'])]
     private ?string $quizTitle = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['leaderboard:read'])]
     private ?\DateTimeInterface $date = null;
 

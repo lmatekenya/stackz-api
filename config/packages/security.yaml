@@ -52,9 +52,10 @@ security:
 
     providers:
         app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
+            id: App\Security\UserProvider
+#            entity:
+#                class: App\Entity\User
+#                property: email
 
     firewalls:
         dev:

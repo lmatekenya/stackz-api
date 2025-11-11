@@ -15,7 +15,7 @@ class ActivityLog
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'activityLogs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -38,9 +38,14 @@ class ActivityLog
     #[Groups(['user:read'])]
     private int $timeElapsed = 0;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $timestamp = null;
+
+    public function __construct()
+    {
+        $this->timestamp = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

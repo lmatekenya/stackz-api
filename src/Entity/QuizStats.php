@@ -40,7 +40,7 @@ class QuizStats
     #[ORM\Column]
     private int $fastestTime = 0;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeInterface $lastPlayed = null;
 
     #[ORM\Column(type: 'float')]

@@ -7,6 +7,7 @@ use App\Entity\QuizSession;
 use App\Entity\ActivityLog;
 use App\Entity\DailyMission;
 use App\Entity\MissionTask;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -94,7 +95,7 @@ class QuizController extends AbstractController
         $currencyReward = $data['cleared'] ? 50 : 20;
         $xpReward = $data['cleared'] ? 100 : 50;
 
-        $user->addCurrency($currencyReward, 'quiz_completion', 'Quiz completion reward')
+        $user->addCurrencyBalance($currencyReward, 'quiz_completion', 'Quiz completion reward')
             ->addXp($xpReward);
 
         // Update daily mission
@@ -170,7 +171,8 @@ class QuizController extends AbstractController
             $task->setDailyMission($mission)
                 ->setGoal($template['goal'])
                 ->setTarget($template['target'])
-                ->setReward($template['reward']);
+                ->setReward($template['reward'])
+                ->setDescription("Complete {$template['target']} {$template['goal']}");
 
             $mission->addTask($task);
         }

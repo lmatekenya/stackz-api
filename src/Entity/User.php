@@ -47,9 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-//    #[ORM\Column(length: 255)]
-//    #[Groups(['user:read', 'user:write'])]
-//    private ?string $username = null;
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
+    private ?string $username = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     #[Groups(['user:read'])]
@@ -168,16 +168,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
     }
 
-//    public function getUsername(): ?string
-//    {
-//        return $this->username;
-//    }
-//
-//    public function setUsername(string $username): static
-//    {
-//        $this->username = $username;
-//        return $this;
-//    }
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
 
     public function getLevel(): int
     {
@@ -234,6 +234,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function addXp(int $amount): static
+    {
+        $this->xp += $amount;
+        return $this;
+    }
+
     public function getCurrencyBalance(): int
     {
         return $this->currencyBalance;
@@ -242,6 +248,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCurrencyBalance(int $currencyBalance): static
     {
         $this->currencyBalance = $currencyBalance;
+        return $this;
+    }
+
+    public function addCurrencyBalance(int $amount): static
+    {
+        $this->currencyBalance += $amount;
         return $this;
     }
 

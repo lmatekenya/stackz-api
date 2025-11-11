@@ -15,7 +15,7 @@ class UserTitle
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userTitles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -31,7 +31,7 @@ class UserTitle
     #[Groups(['user:read'])]
     private bool $isActive = false;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $unlockedAt = null;
 

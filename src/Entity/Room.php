@@ -65,15 +65,15 @@ class Room
     #[Groups(['room:read', 'room:write'])]
     private bool $isPublic = true;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['room:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups(['room:read'])]
     private ?\DateTimeInterface $startedAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     #[Groups(['room:read'])]
     private ?\DateTimeInterface $endedAt = null;
 

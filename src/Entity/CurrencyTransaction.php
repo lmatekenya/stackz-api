@@ -15,7 +15,7 @@ class CurrencyTransaction
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'currencyTransactions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -35,7 +35,7 @@ class CurrencyTransaction
     #[Groups(['user:read'])]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $timestamp = null;
 
