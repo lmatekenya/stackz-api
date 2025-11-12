@@ -20,7 +20,7 @@ class EconomyService
         $transaction->setType('earn');
         $transaction->setSource($source);
         $transaction->setDescription($description);
-        $transaction->setTimestamp(new \DateTime());
+        $transaction->setTimestamp(new \DateTimeImmutable());
 
         $this->entityManager->persist($transaction);
         $this->entityManager->flush();
@@ -42,7 +42,7 @@ class EconomyService
         $transaction->setType('spend');
         $transaction->setSource($source);
         $transaction->setDescription($description);
-        $transaction->setTimestamp(new \DateTime());
+        $transaction->setTimestamp(new \DateTimeImmutable());
 
         $this->entityManager->persist($transaction);
         $this->entityManager->flush();
