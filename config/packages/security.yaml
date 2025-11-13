@@ -1,15 +1,14 @@
-#
 #security:
 #    password_hashers:
-#        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 #        App\Entity\User:
 #            algorithm: auto
 #
 #    providers:
 #        app_user_provider:
-#            entity:
-#                class: App\Entity\User
-#                property: email
+#            id: App\Security\UserProvider
+##            entity:
+##                class: App\Entity\User
+##                property: email
 #
 #    firewalls:
 #        dev:
@@ -20,29 +19,40 @@
 #            pattern: ^/api/docs
 #            security: false
 #
-#        api:
-#            pattern: ^/api
+#        login:
+#            pattern: ^/api/auth/login
 #            stateless: true
-#            jwt: ~
 #            json_login:
-#                check_path: /api/auth/login       # ✅ match your route
-#                username_path: email              # optional but recommended
+#                check_path: /api/auth/login
+#                username_path: email
 #                password_path: password
 #                success_handler: lexik_jwt_authentication.handler.authentication_success
 #                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 #
-#        main:
-#            lazy: true
+#        admin:
+#            pattern: ^/admin
 #            provider: app_user_provider
 #            form_login:
-#                check_path: app_login
 #                login_path: app_login
+#                check_path: app_login
+#                default_target_path: /admin
+#            logout:
+#                path: app_logout
+#                target: /admin/login
+#
+#        api:
+#            pattern: ^/api
+#            stateless: true
+#            jwt: ~
+#
 #
 #    access_control:
-#        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
 #        - { path: ^/api/auth/register, roles: PUBLIC_ACCESS }
 #        - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
+#        - { path: ^/api/quizzes, roles: PUBLIC_ACCESS }
+##        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
 #        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
 #        - { path: ^/admin, roles: ROLE_ADMIN }
 
 security:
@@ -50,22 +60,49 @@ security:
         App\Entity\User:
             algorithm: auto
 
+    # ------------------------
+    # User providers
+    # ------------------------
     providers:
+        # Use your User entity for authentication
         app_user_provider:
-            id: App\Security\UserProvider
-#            entity:
-#                class: App\Entity\User
-#                property: email
+            entity:
+                class: App\Entity\User
+                property: email
 
+    # ------------------------
+    # Firewalls
+    # ------------------------
     firewalls:
+        # Disable security for dev tools and assets
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # Disable security for API docs
         api_docs:
             pattern: ^/api/docs
             security: false
 
+        # API firewall using JWT / stateless
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
+        # Admin firewall
+        admin:
+            pattern: ^/admin
+            provider: app_user_provider
+            form_login:
+                login_path: app_login            # route for login form
+                check_path: app_login            # route to submit login
+                default_target_path: /admin      # redirect after login
+            logout:
+                path: app_logout                 # route to logout
+                target: /admin/login             # redirect after logout
+
+        # Optional: Login API (if you want JSON login for API)
         login:
             pattern: ^/api/auth/login
             stateless: true
@@ -76,15 +113,16 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-        api:
-            pattern: ^/api
-            stateless: true
-            jwt: ~
-
+    # ------------------------
+    # Access Control
+    # ------------------------
     access_control:
+        # API
         - { path: ^/api/auth/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/auth/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/quizzes, roles: PUBLIC_ACCESS }
-#        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/admin, roles: ROLE_ADMIN }
+
+        # Admin
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }   # login page must be public
+        - { path: ^/admin, roles: ROLE_ADMIN }           # everything else requires admin
