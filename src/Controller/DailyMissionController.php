@@ -123,10 +123,14 @@ class DailyMissionController extends AbstractController
             return new JsonResponse(['error' => 'Reward already claimed'], Response::HTTP_BAD_REQUEST);
         }
 
+        // Extract reward amount as integer
+        $rewardAmount = is_array($task->getReward()) ? ($task->getReward()['amount'] ?? 0) : $task->getReward();
+
+
         // Award currency
         $transaction = $this->economyService->earnCurrency(
             $user,
-            $task->getReward(),
+            $rewardAmount,
             'mission_reward',
             "Mission completed: {$task->getDescription()}"
         );

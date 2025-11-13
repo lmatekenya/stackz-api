@@ -81,13 +81,19 @@ class DailyMissionService
 
     private function generateMissionTasks(DailyMission $mission): void
     {
-        $selectedTemplates = array_rand($this->missionTemplates, 3);
+//        $selectedTemplates = array_rand($this->missionTemplates, 3);
+//
+//        if (!is_array($selectedTemplates)) {
+//            $selectedTemplates = [$selectedTemplates];
+//        }
 
-        if (!is_array($selectedTemplates)) {
-            $selectedTemplates = [$selectedTemplates];
+        $numTasks = min(3, count($this->missionTemplates));
+        $selectedKeys = array_rand($this->missionTemplates, $numTasks);
+        if (!is_array($selectedKeys)) {
+            $selectedKeys = [$selectedKeys];
         }
 
-        foreach ($selectedTemplates as $templateIndex) {
+        foreach ($selectedKeys as $templateIndex) {
             $template = $this->missionTemplates[$templateIndex];
 
             $task = new MissionTask();
@@ -109,7 +115,7 @@ class DailyMissionService
 
     public function updateMissionProgress(User $user, string $goalType, int $amount = 1, ?string $category = null): void
     {
-        $today = new \DateTime();
+        $today = new \DateTimeImmutable();
         $mission = $this->getOrCreateDailyMission($user, $today);
 
         foreach ($mission->getTasks() as $task) {

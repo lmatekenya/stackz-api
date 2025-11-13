@@ -14,8 +14,8 @@ use ApiPlatform\Metadata\Patch;
 #[ApiResource(
     operations: [
         new Get(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_USER")', uriTemplate: '/missions/tasks/{id}/progress'),
-        new Patch(security: 'is_granted("ROLE_USER")', uriTemplate: '/missions/tasks/{id}/claim'),
+//        new Post(security: 'is_granted("ROLE_USER")', uriTemplate: '/missions/tasks/{id}/progress'),
+//        new Patch(security: 'is_granted("ROLE_USER")', uriTemplate: '/missions/tasks/{id}/claim'),
     ],
     normalizationContext: ['groups' => ['task:read']],
     denormalizationContext: ['groups' => ['task:write']]
@@ -114,11 +114,18 @@ class MissionTask
         return $this->reward;
     }
 
-    public function setReward(array $reward): static
+//    public function setReward(array $reward): static
+//    {
+//        $this->reward = $reward;
+//        return $this;
+//    }
+
+    public function setReward(array|int $reward): static
     {
-        $this->reward = $reward;
+        $this->reward = is_array($reward) ? $reward : ['amount' => $reward];
         return $this;
     }
+
 
     public function isClaimed(): bool
     {
