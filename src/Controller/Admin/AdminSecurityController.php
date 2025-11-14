@@ -23,9 +23,16 @@ class AdminSecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
-    public function logout(): void
+    #[Route('/access-denied', name: 'access_denied')]
+    public function accessDenied(): Response
     {
-        // Symfony handles logout automatically
+        return $this->render('security/access_denied.html.twig');
     }
+
+//    #[Route('/logout', name: 'app_logout')]
+//    public function logout(): void
+//    {
+//        throw new \LogicException('Logout is handled by Symfony.');
+//    }
+
 }

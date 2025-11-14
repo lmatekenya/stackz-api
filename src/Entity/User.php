@@ -41,7 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private ?string $email = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
+    #[Groups(
+        [
+            'user:read',
+            'user:write',
+        ]
+    )]
     private array $roles = [];
 
     #[ORM\Column]
@@ -347,5 +353,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->username ?? $this->email ?? 'User';
+    }
+
 
 }

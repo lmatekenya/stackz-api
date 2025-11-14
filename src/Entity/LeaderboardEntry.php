@@ -23,7 +23,7 @@ class LeaderboardEntry
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['leaderboard:read'])]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'leaderboardEntries')]
     #[ORM\JoinColumn(nullable: false)]
@@ -38,11 +38,14 @@ class LeaderboardEntry
     #[Groups(['leaderboard:read'])]
     private int $score = 0;
 
+//    #[ORM\Column(type: 'integer')]
+//    private ?int $rank = null;
+
     #[ORM\Column]
     #[Groups(['leaderboard:read'])]
     private int $timeElapsed = 0;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['leaderboard:read'])]
     private ?string $quizTitle = null;
 
@@ -87,6 +90,17 @@ class LeaderboardEntry
         $this->score = $score;
         return $this;
     }
+
+//    public function getRank(): ?int
+//    {
+//        return $this->rank;
+//    }
+//
+//    public function setRank(int $rank): static
+//    {
+//        $this->rank = $rank;
+//        return $this;
+//    }
 
     public function getTimeElapsed(): int
     {

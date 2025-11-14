@@ -84,6 +84,18 @@ security:
             pattern: ^/api/docs
             security: false
 
+        # Optional: Login API (if you want JSON login for API)
+        login:
+            pattern: ^/api/auth/login
+            stateless: true
+            json_login:
+                check_path: /api/auth/login
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+
         # API firewall using JWT / stateless
         api:
             pattern: ^/api
@@ -99,19 +111,13 @@ security:
                 check_path: app_login            # route to submit login
                 default_target_path: /admin      # redirect after login
             logout:
-                path: app_logout                 # route to logout
+                path: /admin/logout                 # route to logout
                 target: /admin/login             # redirect after logout
 
-        # Optional: Login API (if you want JSON login for API)
-        login:
-            pattern: ^/api/auth/login
-            stateless: true
-            json_login:
-                check_path: /api/auth/login
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+#            access_denied_handler: App\Security\AdminAccessDeniedHandler
+            access_denied_url: /access-denied
+
+
 
     # ------------------------
     # Access Control
@@ -125,4 +131,4 @@ security:
 
         # Admin
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }   # login page must be public
-        - { path: ^/admin, roles: ROLE_ADMIN }           # everything else requires admin
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }           # everything else requires admin

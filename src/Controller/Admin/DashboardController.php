@@ -122,6 +122,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Quizzes', 'fas fa-question-circle', Quiz::class);
         yield MenuItem::linkToCrud('Leaderboard', 'fas fa-trophy', LeaderboardEntry::class);
         yield MenuItem::linkToUrl('API Docs', 'fas fa-book', '/api/docs');
-        yield MenuItem::linkToUrl('Back to Site', 'fas fa-globe', '/');
+//        yield MenuItem::linkToUrl('Back to Site', 'fas fa-globe', '/');
+//        yield MenuItem::linkToLogout('Sign out', 'fa fa-sign-out');
+
     }
 }

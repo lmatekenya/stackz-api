@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    super_admin_email: '%env(SUPER_ADMIN_EMAIL)%'
+    super_admin_password: '%env(SUPER_ADMIN_PASSWORD)%'
+    super_admin_username: '%env(SUPER_ADMIN_USERNAME)%'
 
 services:
     # default configuration for services in *this* file
@@ -18,3 +21,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\DataFixtures\UserFixtures:
+        arguments:
+            $superAdminEmail: '%super_admin_email%'
+            $superAdminPassword: '%super_admin_password%'
+            $superAdminUsername: '%super_admin_username%'
