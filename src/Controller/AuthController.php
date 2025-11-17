@@ -99,6 +99,22 @@ class AuthController extends AbstractController
         ]);
     }
 
+//    #[Route('/me', name: 'api_auth_me', methods: ['GET'])]
+//    public function me(): JsonResponse
+//    {
+//        $user = $this->getUser();
+//
+//        if (!$user) {
+//            return new JsonResponse([
+//                'error' => 'Not authenticated'
+//            ], Response::HTTP_UNAUTHORIZED);
+//        }
+//
+//        return new JsonResponse(
+//            json_decode($this->serializer->serialize($user, 'json', ['groups' => ['user:read']]))
+//        );
+//    }
+
     #[Route('/me', name: 'api_auth_me', methods: ['GET'])]
     public function me(): JsonResponse
     {
@@ -106,12 +122,18 @@ class AuthController extends AbstractController
 
         if (!$user) {
             return new JsonResponse([
-                'error' => 'Not authenticated'
+                'error' => 'JWT token missing or invalid'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        return new JsonResponse(
-            json_decode($this->serializer->serialize($user, 'json', ['groups' => ['user:read']]))
-        );
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'username' => $user->getUsername(),
+            'level' => $user->getLevel(),
+            'currencyBalance' => $user->getCurrencyBalance(),
+            'xp' => $user->getXp()
+        ]);
     }
+
 }
